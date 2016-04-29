@@ -5,9 +5,9 @@ glob = require('glob')
 class TabLengthStatusView extends HTMLDivElement
   initialize: (@statusBar) ->
     @classList.add('tab-length-status', 'inline-block')
-    @tabLengthLink = document.createElement('span')
-    @tabLengthLink.classList.add('inline-block')
-    @appendChild(@tabLengthLink)
+    @tabLengthLabel = document.createElement('span')
+    @tabLengthLabel.classList.add('inline-block')
+    @appendChild(@tabLengthLabel)
     @handleEvents()
 
   attach: ->
@@ -15,11 +15,15 @@ class TabLengthStatusView extends HTMLDivElement
 
   destroy: ->
     @activeItemSubscription?.dispose()
+    @configTabLengthSubscription?.dispose()
     @tile?.destroy()
 
   handleEvents: ->
     @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
       @updateTabLength()
+      @updateTabLengthText()
+
+    @configTabLengthSubscription = atom.config.observe 'editor.tabLength', () =>
       @updateTabLengthText()
 
   updateTabLength: ->
@@ -49,7 +53,7 @@ class TabLengthStatusView extends HTMLDivElement
 
   updateTabLengthText: ->
     tabLength = atom.config.get('editor.tabLength') || atom.config.defaultSettings.editor.tabLength
-    @tabLengthLink.textContent = "Tab Len: #{tabLength}"
+    @tabLengthLabel.textContent = "Tab Len: #{tabLength}"
     @style.display = ''
 
 module.exports = document.registerElement('tab-length-status', prototype: TabLengthStatusView.prototype)
