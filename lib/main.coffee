@@ -1,7 +1,7 @@
 tabLengthStatusView = null
 
 module.exports =
-    
+
   deactivate: ->
     tabLengthStatusView?.destroy()
     tabLengthStatusView = null
@@ -9,7 +9,5 @@ module.exports =
   consumeStatusBar: (statusBar) ->
     TabLengthStatusView = require './tab-length-status-view'
     tabLengthStatusView = new TabLengthStatusView()
-    tabLengthStatusView.initialize(statusBar, tabLengths)
+    tabLengthStatusView.initialize(statusBar)
     tabLengthStatusView.attach()
-
-tabLengths = [2, 4];
