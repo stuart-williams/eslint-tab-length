@@ -13,15 +13,14 @@ class TabLengthStatusView extends HTMLDivElement
   attach: ->
     @tile = @statusBar.addRightTile(priority: 11, item: this)
 
-  handleEvents: ->
-    @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
-      @updateTabLength()
-
-    @updateTabLength()
-
   destroy: ->
     @activeItemSubscription?.dispose()
     @tile?.destroy()
+
+  handleEvents: ->
+    @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
+      @updateTabLength()
+      @updateTabLengthText()
 
   updateTabLength: ->
     textEditor = atom.workspace.getActiveTextEditor()
@@ -47,7 +46,6 @@ class TabLengthStatusView extends HTMLDivElement
       return false
 
     atom.config.set('editor.tabLength', config.rules.indent[1])
-    @updateTabLengthText()
 
   updateTabLengthText: ->
     tabLength = atom.config.get('editor.tabLength') || atom.config.defaultSettings.editor.tabLength
