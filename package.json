@@ -11,5 +11,12 @@
   },
   "dependencies": {
     "glob": "^7.0.3"
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
   }
 }
