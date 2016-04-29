@@ -1,6 +1,6 @@
 {
   "name": "eslint-tab-length",
-  "main": "./lib/index",
+  "main": "./lib/main",
   "version": "0.0.0",
   "description": "My awesome atom package!",
   "license": "MIT",

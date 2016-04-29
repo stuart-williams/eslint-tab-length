@@ -1,5 +1,0 @@
-{
-  "atom-text-editor": {
-    "ctrl-alt-t": "eslint-tab-length:Set Tab Length"
-  }
-}
