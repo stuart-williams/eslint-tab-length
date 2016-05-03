@@ -21,7 +21,6 @@ class TabLengthStatusView extends HTMLDivElement
   handleEvents: ->
     @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
       @updateTabLength()
-      @updateTabLengthText()
 
     @configTabLengthSubscription = atom.config.observe 'editor.tabLength', () =>
       @updateTabLengthText()
@@ -41,7 +40,7 @@ class TabLengthStatusView extends HTMLDivElement
           JSON.parse(fs.readFileSync(files[0], 'utf8'))
         catch
           {}
-       else if dir != currFileInfo.root
+      else if dir != currFileInfo.root
          findESLintConfig(path.resolve(dir, '..'))
 
     config = findESLintConfig(currFileInfo.dir)
