@@ -18,6 +18,17 @@ class TabLengthStatusView extends HTMLDivElement
     @configTabLengthSubscription?.dispose()
     @tile?.destroy()
 
+  findESLintConfig: (currFileInfo) ->
+    files = glob.sync(currFileInfo.dir + path.sep + '.eslintrc*')
+    if files.length
+      try
+        return JSON.parse(fs.readFileSync(files[0], 'utf8'))
+      catch
+        return {}
+    if currFileInfo.dir != currFileInfo.root
+      return @findESLintConfig(path.resolve(currFileInfo.dir, '..'))
+    return {}
+
   handleEvents: ->
     @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
       @updateTabLength()
@@ -32,18 +43,7 @@ class TabLengthStatusView extends HTMLDivElement
       return false
 
     currFileInfo = path.parse(textEditor.getPath())
-
-    findESLintConfig = (dir) ->
-      files = glob.sync(dir + path.sep + '.eslintrc*')
-      if files.length
-        try
-          JSON.parse(fs.readFileSync(files[0], 'utf8'))
-        catch
-          {}
-      else if dir != currFileInfo.root
-         findESLintConfig(path.resolve(dir, '..'))
-
-    config = findESLintConfig(currFileInfo.dir)
+    config = @findESLintConfig(currFileInfo)
 
     if !config.rules || !config.rules.indent
       return false
