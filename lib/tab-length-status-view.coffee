@@ -2,7 +2,10 @@ fs = require('fs')
 path = require('path')
 glob = require('glob')
 
+EXT = ['.js', '.jsx']
+
 class TabLengthStatusView extends HTMLDivElement
+
   initialize: (@statusBar) ->
     @classList.add('tab-length-status', 'inline-block')
     @tabLengthLabel = document.createElement('span')
@@ -26,7 +29,8 @@ class TabLengthStatusView extends HTMLDivElement
       catch
         return {}
     if currFileInfo.dir != currFileInfo.root
-      return @findESLintConfig(path.resolve(currFileInfo.dir, '..'))
+      currFileInfo.dir = path.resolve(currFileInfo.dir, '..');
+      return @findESLintConfig(currFileInfo)
     return {}
 
   handleEvents: ->
@@ -34,25 +38,37 @@ class TabLengthStatusView extends HTMLDivElement
       @updateTabLength()
 
     @configTabLengthSubscription = atom.config.observe 'editor.tabLength', () =>
-      @updateTabLengthText()
+      @updateTabLength()
 
   updateTabLength: ->
     textEditor = atom.workspace.getActiveTextEditor()
 
     if (!textEditor)
-      return false
+      return @hideTabLengthText()
 
     currFileInfo = path.parse(textEditor.getPath())
+
+    if (EXT.indexOf(currFileInfo.ext) < 0)
+      return @hideTabLengthText()
+
     config = @findESLintConfig(currFileInfo)
 
     if !config.rules || !config.rules.indent
-      return false
+      return @hideTabLengthText()
 
-    atom.config.set('editor.tabLength', config.rules.indent[1])
+    indent = config.rules.indent[1];
+
+    if (atom.config.get('editor.tabLength') != indent)
+      atom.config.set('editor.tabLength', indent)
+    else
+      @updateTabLengthText()
+
+  hideTabLengthText: ->
+    @style.display = 'none'
 
   updateTabLengthText: ->
     tabLength = atom.config.get('editor.tabLength') || atom.config.defaultSettings.editor.tabLength
-    @tabLengthLabel.textContent = "Tab Len: #{tabLength}"
+    @tabLengthLabel.textContent = "ESLint TabLen: #{tabLength}"
     @style.display = ''
 
 module.exports = document.registerElement('tab-length-status', prototype: TabLengthStatusView.prototype)
