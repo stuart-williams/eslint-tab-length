@@ -3,6 +3,7 @@ path = require('path')
 glob = require('glob')
 
 EXT = ['.js', '.jsx']
+INDENT = 4;
 
 class TabLengthStatusView extends HTMLDivElement
 
@@ -56,7 +57,7 @@ class TabLengthStatusView extends HTMLDivElement
     if !config.rules || !config.rules.indent
       return @hideTabLengthText()
 
-    indent = if Array.isArray(config.rules.indent) then config.rules.indent[1] else config.rules.indent;
+    indent = if Array.isArray(config.rules.indent) then config.rules.indent[1] else INDENT;
 
     if (atom.config.get('editor.tabLength') != indent)
       atom.config.set('editor.tabLength', indent)
