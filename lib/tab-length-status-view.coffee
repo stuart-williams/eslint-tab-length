@@ -56,7 +56,7 @@ class TabLengthStatusView extends HTMLDivElement
     if !config.rules || !config.rules.indent
       return @hideTabLengthText()
 
-    indent = config.rules.indent[1];
+    indent = if Array.isArray(config.rules.indent) then config.rules.indent[1] else config.rules.indent;
 
     if (atom.config.get('editor.tabLength') != indent)
       atom.config.set('editor.tabLength', indent)
