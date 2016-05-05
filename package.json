@@ -1,7 +1,7 @@
 {
   "name": "eslint-tab-length",
   "main": "./lib/main",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Sets the editor tab length to the value specified in your projects eslintrc config file",
   "license": "MIT",
   "private": true,
