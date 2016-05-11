@@ -44,7 +44,7 @@ class TabLengthStatusView extends HTMLDivElement
   updateTabLength: ->
     textEditor = atom.workspace.getActiveTextEditor()
 
-    if (!textEditor)
+    if (!textEditor || !textEditor.getPath())
       return @hideTabLengthText()
 
     currFileInfo = path.parse(textEditor.getPath())
