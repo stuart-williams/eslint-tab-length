@@ -20,14 +20,10 @@ class TabLengthStatusView extends HTMLDivElement
 
   destroy: ->
     @activeItemSubscription?.dispose()
-    @configTabLengthSubscription?.dispose()
     @tile?.destroy()
 
   handleEvents: ->
     @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
-      @updateTabLength()
-
-    @configTabLengthSubscription = atom.config.observe 'editor.tabLength', () =>
       @updateTabLength()
 
   updateTabLength: ->
@@ -49,8 +45,8 @@ class TabLengthStatusView extends HTMLDivElement
 
     if (atom.config.get('editor.tabLength') != indent)
       atom.config.set('editor.tabLength', indent)
-    else
-      @updateTabLengthText()
+
+    @updateTabLengthText()
 
   hideTabLengthText: ->
     @style.display = 'none'
