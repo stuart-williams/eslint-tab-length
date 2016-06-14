@@ -10,7 +10,8 @@
     "atom": ">0.61.0"
   },
   "dependencies": {
-    "glob": "^7.0.3"
+    "glob": "^7.0.3",
+    "ramda": "^0.21.0"
   },
   "consumedServices": {
     "status-bar": {
@@ -18,5 +19,8 @@
         "^1.0.0": "consumeStatusBar"
       }
     }
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^5.3.1"
   }
 }

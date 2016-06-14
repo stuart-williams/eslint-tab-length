@@ -1,9 +1,10 @@
 fs = require('fs')
 path = require('path')
 glob = require('glob')
+findESLintConfig = require('./find-eslint-config')
+getIndent = require('./get-indent')
 
 EXT = ['.js', '.jsx']
-INDENT = 4;
 
 class TabLengthStatusView extends HTMLDivElement
 
@@ -21,18 +22,6 @@ class TabLengthStatusView extends HTMLDivElement
     @activeItemSubscription?.dispose()
     @configTabLengthSubscription?.dispose()
     @tile?.destroy()
-
-  findESLintConfig: (currFileInfo) ->
-    files = glob.sync(currFileInfo.dir + path.sep + '.eslintrc*')
-    if files.length
-      try
-        return JSON.parse(fs.readFileSync(files[0], 'utf8'))
-      catch
-        return {}
-    if currFileInfo.dir != currFileInfo.root
-      currFileInfo.dir = path.resolve(currFileInfo.dir, '..');
-      return @findESLintConfig(currFileInfo)
-    return {}
 
   handleEvents: ->
     @activeItemSubscription = atom.workspace.onDidChangeActivePaneItem =>
@@ -52,12 +41,11 @@ class TabLengthStatusView extends HTMLDivElement
     if (EXT.indexOf(currFileInfo.ext) < 0)
       return @hideTabLengthText()
 
-    config = @findESLintConfig(currFileInfo)
+    config = findESLintConfig(currFileInfo)
+    indent = getIndent(config)
 
-    if !config.rules || !config.rules.indent
+    if !indent
       return @hideTabLengthText()
-
-    indent = if Array.isArray(config.rules.indent) then config.rules.indent[1] else INDENT;
 
     if (atom.config.get('editor.tabLength') != indent)
       atom.config.set('editor.tabLength', indent)
