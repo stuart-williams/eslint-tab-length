@@ -3,6 +3,13 @@
   "main": "./lib/main",
   "version": "0.3.11",
   "description": "Sets the Atom editor tab length to the value of your ESLint indent rule",
+  "keywords": [
+    "eslint",
+    "indent",
+    "tab",
+    "length"
+  ],
+  "author": "Stuart Williams <stuwilliams47@gmail.com>",
   "license": "MIT",
   "private": true,
   "repository": "https://github.com/stuwilliams47/eslint-tab-length",
