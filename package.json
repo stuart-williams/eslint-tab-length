@@ -12,7 +12,7 @@
   "author": "Stuart Williams <stuwilliams47@gmail.com>",
   "license": "MIT",
   "private": true,
-  "repository": "https://github.com/stuwilliams47/eslint-tab-length",
+  "repository": "https://github.com/stuart-williams/eslint-tab-length",
   "engines": {
     "atom": ">0.61.0"
   },
