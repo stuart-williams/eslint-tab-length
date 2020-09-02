@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "glob": "^7.0.3",
-    "ramda": "^0.21.0"
+    "ramda": "^0.21.0",
+    "require-from-string": "^2.0.2"
   },
   "consumedServices": {
     "status-bar": {
